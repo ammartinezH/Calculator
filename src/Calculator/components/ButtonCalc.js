@@ -70,6 +70,6 @@ ButtonCalc.defaultProps = {
   inputResult: null,
   calculatorKeyDown: null,
   children: null,
-  order: 0,
+  order: '0',
 };
 export default ButtonCalc;
