@@ -1,30 +1,45 @@
-import React, { useState, useRef } from "react";
-import ButtonCalc from "./components/ButtonCalc";
-import * as utils from "./utils";
+import React, { useState, useRef } from 'react';
+import ButtonCalc from './components/ButtonCalc';
+import * as utils from './utils';
 
+/**
+ * Calculator
+ *
+ * @component
+ * @example
+ * <Calculator />
+ */
 const Calculator = () => {
-  const [val1, setVal1] = useState("");
-  const [currentValue, setCurrentValue] = useState("");
-  const [result, setResult] = useState("");
+  const [val1, setVal1] = useState('');
+  const [currentValue, setCurrentValue] = useState('');
+  const [result, setResult] = useState('');
   const [isResult, setIsResult] = useState(false);
-  const [currentKeyPress, setCurrentKeyPress] = useState("");
+  const [currentKeyPress, setCurrentKeyPress] = useState('');
 
-  const [operation, setOperation] = useState(""); //+, -, *, /
+  const [operation, setOperation] = useState(''); // +, -, *, /
   const [obj, setObj] = useState([1, 2, 3, 4]);
 
-  const keyNumbers = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0", "."];
-  const keyOperations = ["+", "-", "*", "/"];
-  const keyActions = ["Enter", "=", "Delete", "Backspace"];
+  const keyNumbers = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.'];
+  const keyOperations = ['+', '-', '*', '/'];
+  const keyActions = ['Enter', '=', 'Delete', 'Backspace'];
 
   const inputResult = useRef(null);
 
   const regexNumberFloat = /^[+-]?(\d+)?.?(\d+)?$/;
 
+  const reset = () => {
+    setVal1('');
+    setOperation('');
+    setIsResult(false);
+    setCurrentValue('');
+    setResult('');
+  };
+
   const addCharacter = (val) => {
-    if (!(val === "." && currentValue.includes(val))) {
+    if (!(val === '.' && currentValue.includes(val))) {
       let resultFix = currentValue.toString();
       if (!regexNumberFloat.test(currentValue)) {
-        resultFix = "";
+        resultFix = '';
       }
       setCurrentValue(resultFix + val.toString());
     }
@@ -32,20 +47,20 @@ const Calculator = () => {
 
   const addOperation = (val) => {
     if (
-      !regexNumberFloat.test(currentValue) ||
-      !regexNumberFloat.test(result)
+      !regexNumberFloat.test(currentValue)
+      || !regexNumberFloat.test(result)
     ) {
       reset();
     } else {
-      if (val === "-" && operation !== "-" && !(currentValue || result)) {
-        setCurrentValue("-");
+      if (val === '-' && operation !== '-' && !(currentValue || result)) {
+        setCurrentValue('-');
       } else {
         setOperation(val);
       }
       if (!val1 && (currentValue || result)) {
         setVal1(currentValue || result);
-        setCurrentValue("");
-        setResult("");
+        setCurrentValue('');
+        setResult('');
         setIsResult(false);
       }
     }
@@ -55,28 +70,20 @@ const Calculator = () => {
     setCurrentValue(currentValue.slice(0, -1));
   };
 
-  const reset = () => {
-    setVal1("");
-    setOperation("");
-    setIsResult(false);
-    setCurrentValue("");
-    setResult("");
-  };
-
   const showResult = () => {
     if (operation) {
-      let operationResult = "";
+      let operationResult = '';
       switch (operation) {
-        case "+":
+        case '+':
           operationResult = utils.sum(val1, currentValue).toString();
           break;
-        case "-":
+        case '-':
           operationResult = utils.dif(val1, currentValue).toString();
           break;
-        case "*":
+        case '*':
           operationResult = utils.mul(val1, currentValue).toString();
           break;
-        case "/":
+        case '/':
           operationResult = utils.div(val1, currentValue).toString();
           break;
 
@@ -85,25 +92,25 @@ const Calculator = () => {
       }
       setIsResult(true);
       setResult(operationResult);
-      setCurrentValue("");
-      setVal1("");
-      setOperation("");
+      setCurrentValue('');
+      setVal1('');
+      setOperation('');
     }
   };
 
   const calculatorKeyDown = (e) => {
-    if (e.key !== "Tab") e.preventDefault();
+    if (e.key !== 'Tab') e.preventDefault();
     if (keyNumbers.includes(e.key)) {
       isResult && reset();
       addCharacter(e.key.toString());
     } else if (keyOperations.includes(e.key)) {
       addOperation(e.key.toString());
     } else if (keyActions.includes(e.key)) {
-      if (e.key === "Enter" || e.key === "=") {
+      if (e.key === 'Enter' || e.key === '=') {
         showResult();
-      } else if (e.key === "Delete") {
+      } else if (e.key === 'Delete') {
         reset();
-      } else if (e.key === "Backspace") {
+      } else if (e.key === 'Backspace') {
         removeLastCharacter();
       }
     }
@@ -112,6 +119,7 @@ const Calculator = () => {
   return (
     <div>
       <button
+        type="button"
         onClick={() => {
           setObj(utils.moveArray(obj));
           setCurrentValue(obj.toString());
@@ -120,19 +128,26 @@ const Calculator = () => {
         Number rotation.
       </button>
       <div
+        role="button"
+        tabIndex="0"
         className="calculator"
         onClick={() => {
+          inputResult.current.focus();
+        }}
+        onKeyDown={() => {
           inputResult.current.focus();
         }}
       >
         <div className="result">
           <span className="light-result">
-            {val1} {operation}
+            {val1}
+            {' '}
+            {operation}
           </span>
           <input
             data-testid="result"
             ref={inputResult}
-            tabIndex="1"
+            tabIndex="0"
             type="text"
             value={result || currentValue}
             onKeyDown={(e) => {
@@ -140,7 +155,7 @@ const Calculator = () => {
               calculatorKeyDown(e);
             }}
             onKeyUp={() => {
-              setCurrentKeyPress("");
+              setCurrentKeyPress('');
             }}
             onChange={(e) => {
               setCurrentValue(e.target.value);
@@ -149,7 +164,7 @@ const Calculator = () => {
         </div>
         <div className="group-number">
           <ButtonCalc
-            active={currentKeyPress === "Delete"}
+            active={currentKeyPress === 'Delete'}
             inputResult={inputResult}
             onClick={() => reset()}
             calculatorKeyDown={(e) => calculatorKeyDown(e)}
@@ -158,13 +173,13 @@ const Calculator = () => {
             C
           </ButtonCalc>
           <ButtonCalc
-            active={currentKeyPress === "Backspace"}
+            active={currentKeyPress === 'Backspace'}
             inputResult={inputResult}
             onClick={() => removeLastCharacter()}
             calculatorKeyDown={(e) => calculatorKeyDown(e)}
             setCurrentKeyPress={(e) => setCurrentKeyPress(e)}
           >
-            {"<="}
+            {'<='}
           </ButtonCalc>
         </div>
         <div className="normal-keys">
@@ -174,7 +189,7 @@ const Calculator = () => {
                 active={currentKeyPress === key}
                 inputResult={inputResult}
                 tabIndex={parseInt(key, 10) + 1}
-                key={"button-" + key}
+                key={`button-${key}`}
                 onClick={() => {
                   isResult && reset();
                   addCharacter(key);
@@ -186,7 +201,7 @@ const Calculator = () => {
               </ButtonCalc>
             ))}
             <ButtonCalc
-              active={currentKeyPress === "=" || currentKeyPress === "Enter"}
+              active={currentKeyPress === '=' || currentKeyPress === 'Enter'}
               inputResult={inputResult}
               onClick={() => showResult()}
               calculatorKeyDown={(e) => calculatorKeyDown(e)}
@@ -200,7 +215,7 @@ const Calculator = () => {
               <ButtonCalc
                 active={currentKeyPress === key}
                 inputResult={inputResult}
-                key={"button-" + key}
+                key={`button-${key}`}
                 onClick={() => addOperation(key)}
                 calculatorKeyDown={(e) => calculatorKeyDown(e)}
                 setCurrentKeyPress={(e) => setCurrentKeyPress(e)}
