@@ -23,7 +23,7 @@ const ButtonCalc = ({
 }) => (
   <div className="wrapper-button">
     <div
-      tabIndex={tabIndex || 0}
+      tabIndex={tabIndex}
       role="button"
       aria-pressed="false"
       className={`button-calc ${active && 'active'}`}
@@ -52,13 +52,16 @@ ButtonCalc.propTypes = {
   active: PropTypes.bool,
   onClick: PropTypes.func,
   setCurrentKeyPress: PropTypes.func,
-  inputResult: PropTypes.element,
+  inputResult: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
   calculatorKeyDown: PropTypes.func,
-  children: PropTypes.element,
+  children: PropTypes.string,
 };
 
 ButtonCalc.defaultProps = {
-  tabIndex: 0,
+  tabIndex: '0',
   active: false,
   onClick: null,
   setCurrentKeyPress: null,

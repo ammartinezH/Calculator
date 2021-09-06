@@ -188,7 +188,6 @@ const Calculator = () => {
               <ButtonCalc
                 active={currentKeyPress === key}
                 inputResult={inputResult}
-                tabIndex={parseInt(key, 10) + 1}
                 key={`button-${key}`}
                 onClick={() => {
                   isResult && reset();
