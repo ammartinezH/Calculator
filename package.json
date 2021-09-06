@@ -8,11 +8,11 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "@testing-library/jest-dom": "5.14.1",
+    "@testing-library/react": "12.0.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "5.14.1",
-    "@testing-library/react": "12.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.24.2",
@@ -31,10 +31,5 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js src/**/*.jsx"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
 }
