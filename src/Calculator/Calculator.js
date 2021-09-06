@@ -135,8 +135,8 @@ const Calculator = () => {
         onClick={() => {
           inputResult.current.focus();
         }}
-        onKeyDown={() => {
-          inputResult.current.focus();
+        onKeyDown={(e) => {
+          !(e.key === 'Shift' || e.key === 'Tab') && inputResult.current.focus();
         }}
       >
         <div className="result">
