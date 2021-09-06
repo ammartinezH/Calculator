@@ -19,9 +19,9 @@ import PropTypes from 'prop-types';
  * </ButtonCalc>
  */
 const ButtonCalc = ({
-  tabIndex, active, onClick, setCurrentKeyPress, inputResult, calculatorKeyDown, children,
+  tabIndex, active, onClick, setCurrentKeyPress, inputResult, calculatorKeyDown, children, order,
 }) => (
-  <div className="wrapper-button">
+  <div style={{ order }} className="wrapper-button">
     <div
       tabIndex={tabIndex}
       role="button"
@@ -59,6 +59,7 @@ ButtonCalc.propTypes = {
   ]),
   calculatorKeyDown: PropTypes.func,
   children: PropTypes.string,
+  order: PropTypes.string,
 };
 
 ButtonCalc.defaultProps = {
@@ -69,6 +70,6 @@ ButtonCalc.defaultProps = {
   inputResult: null,
   calculatorKeyDown: null,
   children: null,
-
+  order: 0,
 };
 export default ButtonCalc;

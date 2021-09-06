@@ -42,20 +42,26 @@
 }
 .normal-keys {
   display: flex;
+  justify-content: space-between;
+}
+.group-number--delete{
+  display: flex;
+  justify-content: space-between;
 }
 .group-number {
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  place-content: center;
+}
+.group-number .button-calc {
+  width: 35px;
 }
 .wrapper-button {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.group-number .wrapper-button {
-  width: 30%;
-}
+
 .wrapper-button {
   min-height: 50px;
 }

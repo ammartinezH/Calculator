@@ -19,7 +19,8 @@ const Calculator = () => {
   const [operation, setOperation] = useState(''); // +, -, *, /
   const [obj, setObj] = useState([1, 2, 3, 4]);
 
-  const keyNumbers = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.'];
+  const keyNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+  const keyNumbersOrder = ['9', '6', '7', '8', '3', '4', '5', '0', '1', '2', '10'];
   const keyOperations = ['+', '-', '*', '/'];
   const keyActions = ['Enter', '=', 'Delete', 'Backspace'];
 
@@ -162,7 +163,7 @@ const Calculator = () => {
             }}
           />
         </div>
-        <div className="group-number">
+        <div className="group-number--delete">
           <ButtonCalc
             active={currentKeyPress === 'Delete'}
             inputResult={inputResult}
@@ -184,8 +185,9 @@ const Calculator = () => {
         </div>
         <div className="normal-keys">
           <div className="group-number">
-            {keyNumbers.map((key) => (
+            {keyNumbers.map((key, index) => (
               <ButtonCalc
+                order={keyNumbersOrder[index]}
                 active={currentKeyPress === key}
                 inputResult={inputResult}
                 key={`button-${key}`}
@@ -200,6 +202,7 @@ const Calculator = () => {
               </ButtonCalc>
             ))}
             <ButtonCalc
+              order="11"
               active={currentKeyPress === '=' || currentKeyPress === 'Enter'}
               inputResult={inputResult}
               onClick={() => showResult()}
