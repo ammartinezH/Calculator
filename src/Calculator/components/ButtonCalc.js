@@ -31,6 +31,7 @@ const ButtonCalc = ({
         onClick(e);
       }}
       onKeyDown={(e) => {
+        e.stopPropagation();
         setCurrentKeyPress(e.key);
         if (e.key === 'Enter') {
           onClick();
