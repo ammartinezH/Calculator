@@ -110,3 +110,21 @@ describe('[Calculators] operations with keyboard', () => {
     })
   })
 })
+
+describe('[Calculators] Number rotation', () => {
+  test('Click one time', () => {
+    const { input } = setup()
+    const btn = screen.getByRole('button', { name: /rotation/i })
+
+    fireEvent.click(btn)
+    expect(input.value).toBe('2,3,4,1')
+  })
+  test('Click 3 times', () => {
+    const { input } = setup()
+    const btn = screen.getByRole('button', { name: /rotation/i })
+    fireEvent.click(btn)
+    fireEvent.click(btn)
+    fireEvent.click(btn)
+    expect(input.value).toBe('4,1,2,3')
+  })
+})
