@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 /**
  * Calculators button
@@ -28,17 +28,17 @@ const ButtonCalc = ({
       aria-pressed="false"
       className={`button-calc ${active && 'active'}`}
       onClick={(e) => {
-        onClick(e);
+        onClick(e)
       }}
       onKeyDown={(e) => {
-        e.stopPropagation();
-        setCurrentKeyPress(e.key);
+        e.stopPropagation()
+        setCurrentKeyPress(e.key)
         if (e.key === 'Enter') {
-          onClick();
+          onClick()
         } else if (!(e.key === 'Tab' || e.key === 'Shift')) {
-          e.preventDefault();
-          inputResult.current.focus();
-          calculatorKeyDown(e);
+          e.preventDefault()
+          inputResult.current.focus()
+          calculatorKeyDown(e)
         }
       }}
       onKeyUp={() => {}}
@@ -46,7 +46,7 @@ const ButtonCalc = ({
       {children}
     </div>
   </div>
-);
+)
 
 ButtonCalc.propTypes = {
   tabIndex: PropTypes.oneOf(['0', '-1']),
@@ -60,7 +60,7 @@ ButtonCalc.propTypes = {
   calculatorKeyDown: PropTypes.func,
   children: PropTypes.string,
   order: PropTypes.string,
-};
+}
 
 ButtonCalc.defaultProps = {
   tabIndex: '0',
@@ -71,5 +71,5 @@ ButtonCalc.defaultProps = {
   calculatorKeyDown: null,
   children: null,
   order: '0',
-};
-export default ButtonCalc;
+}
+export default ButtonCalc
