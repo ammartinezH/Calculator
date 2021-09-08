@@ -17,7 +17,6 @@ const Calculator = () => {
   const [currentKeyPress, setCurrentKeyPress] = useState('')
 
   const [operation, setOperation] = useState('') // +, -, *, /
-  const [obj, setObj] = useState([1, 2, 3, 4])
 
   const keyNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
   const keyNumbersOrder = ['9', '6', '7', '8', '3', '4', '5', '0', '1', '2', '10']
@@ -116,18 +115,16 @@ const Calculator = () => {
       }
     }
   }
-  // console.log({ val1, currentValue, result, isResult, operation });
+
+  const handleClickNumberRotation = () => {
+    const numberToRotation = isResult ? result : currentValue
+    setIsResult(false)
+    setResult('')
+    setCurrentValue(utils.moveArray(numberToRotation.split('')).join(''))
+  }
+
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => {
-          setObj(utils.moveArray(obj))
-          setCurrentValue(obj.toString())
-        }}
-      >
-        Number rotation.
-      </button>
       <div
         role="button"
         tabIndex="0"
@@ -172,6 +169,15 @@ const Calculator = () => {
             setCurrentKeyPress={(e) => setCurrentKeyPress(e)}
           >
             C
+          </ButtonCalc>
+          <ButtonCalc
+            active={currentKeyPress === 'Delete'}
+            inputResult={inputResult}
+            onClick={handleClickNumberRotation}
+            calculatorKeyDown={calculatorKeyDown}
+            setCurrentKeyPress={setCurrentKeyPress}
+          >
+            ROT
           </ButtonCalc>
           <ButtonCalc
             active={currentKeyPress === 'Backspace'}
