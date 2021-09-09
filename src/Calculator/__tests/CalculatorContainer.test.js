@@ -1,18 +1,32 @@
 import React from 'react'
-import { render, fireEvent, screen } from '@testing-library/react'
-import Calculator from '../Calculator'
+import {
+  cleanup, fireEvent, render, screen,
+} from '@testing-library/react'
+import '@testing-library/jest-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 import { numbers, operations } from './utils'
+import { reducer } from '../../reducer'
+import { preloadedState } from '../../store'
+import CalculatorContainer from '../CalculatorContainer'
 
-const setup = () => {
-  const container = render(<Calculator />)
+const setup = (state = {}) => {
+  cleanup()
+  const store = createStore(reducer, state, preloadedState)
+  const container = render(
+    <Provider store={store}>
+      <CalculatorContainer />
+    </Provider>,
+  )
   const input = container.getByTestId('result')
   return {
+    store,
     input,
     ...container,
   }
 }
 describe('[Calculators]', () => {
-  describe(' display all numbers with mouse', () => {
+  describe('display all numbers with mouse', () => {
     numbers.forEach((number) => {
       test(`display ${number}`, () => {
         const { input } = setup()
@@ -23,7 +37,7 @@ describe('[Calculators]', () => {
     })
   })
 
-  describe(' display all numbers with keyboard', () => {
+  describe('display all numbers with keyboard', () => {
     numbers.forEach((number) => {
       test(`display ${number}`, () => {
         const { input } = setup()
@@ -34,7 +48,7 @@ describe('[Calculators]', () => {
     })
   })
 
-  describe(' other tests', () => {
+  describe('other tests', () => {
     test('display number concated', () => {
       const { input } = setup()
       fireEvent.click(screen.getByRole('button', { name: '1' }))
@@ -43,7 +57,7 @@ describe('[Calculators]', () => {
     })
   })
 
-  describe(' operations with mouse', () => {
+  describe('operations with mouse', () => {
     operations.forEach(({
       val1, val2, operation, result,
     }) => {
@@ -66,7 +80,7 @@ describe('[Calculators]', () => {
     })
   })
 
-  describe(' operations with keyboard', () => {
+  describe('operations with keyboard', () => {
     operations.forEach(({
       val1, val2, operation, result,
     }) => {
@@ -86,7 +100,7 @@ describe('[Calculators]', () => {
     })
   })
 
-  describe(' Number rotation', () => {
+  describe('Number rotation', () => {
     test('Click one time', () => {
       const { input } = setup()
       fireEvent.keyDown(input, { key: '1' })
@@ -110,6 +124,40 @@ describe('[Calculators]', () => {
       fireEvent.click(btn)
       fireEvent.click(btn)
       expect(input.value).toBe('4123')
+    })
+  })
+
+  describe('Record', () => {
+    test('Calculate 22 + 2 = 24', () => {
+      setup()
+      const btn2 = screen.queryByRole('button', { name: '2' })
+      fireEvent.click(btn2)
+      fireEvent.click(btn2)
+      fireEvent.click(screen.getByRole('button', { name: '+' }))
+      fireEvent.click(btn2)
+      fireEvent.click(screen.getByRole('button', { name: '=' }))
+
+      return screen.findByText('22 + 2 = 24').then((element) => {
+        expect(element).toBeInTheDocument()
+      })
+    })
+
+    test('Calculate 2 operations, view last result', () => {
+      setup()
+      const btn2 = screen.queryByRole('button', { name: '2' })
+      fireEvent.click(btn2)
+      fireEvent.click(btn2)
+      fireEvent.click(screen.getByRole('button', { name: '+' }))
+      fireEvent.click(btn2)
+      fireEvent.click(screen.getByRole('button', { name: '=' }))
+
+      fireEvent.click(screen.getByRole('button', { name: '+' }))
+      fireEvent.click(btn2)
+      fireEvent.click(screen.getByRole('button', { name: '=' }))
+
+      return screen.findByText('24 + 2 = 26').then((element) => {
+        expect(element).toBeInTheDocument()
+      })
     })
   })
 })
