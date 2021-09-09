@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import ButtonCalc from './components/ButtonCalc'
+import {
+  keyNumbers, keyNumbersOrder, keyOperations,
+} from './utils'
 import * as utils from './utils'
 
 /**
@@ -16,116 +19,22 @@ const Calculator = ({ addOperationToHistory, lastOperation }) => {
   const [result, setResult] = useState('')
   const [isResult, setIsResult] = useState(false)
   const [currentKeyPress, setCurrentKeyPress] = useState('')
-
   const [operation, setOperation] = useState('') // +, -, *, /
-
-  const keyNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
-  const keyNumbersOrder = ['9', '6', '7', '8', '3', '4', '5', '0', '1', '2', '10']
-  const keyOperations = ['+', '-', '*', '/']
-  const keyActions = ['Enter', '=', 'Delete', 'Backspace']
-
   const inputResult = useRef(null)
 
-  const regexNumberFloat = /^[+-]?(\d+)?.?(\d+)?$/
-
-  const reset = () => {
-    setVal1('')
-    setOperation('')
-    setIsResult(false)
-    setCurrentValue('')
-    setResult('')
-  }
-
-  const addCharacter = (val) => {
-    if (!(val === '.' && currentValue.includes(val))) {
-      let resultFix = currentValue.toString()
-      if (!regexNumberFloat.test(currentValue)) {
-        resultFix = ''
-      }
-      setCurrentValue(resultFix + val.toString())
-    }
-  }
-
-  const addOperation = (val) => {
-    if (
-      !regexNumberFloat.test(currentValue)
-      || !regexNumberFloat.test(result)
-    ) {
-      reset()
-    } else {
-      if (val === '-' && operation !== '-' && !(currentValue || result)) {
-        setCurrentValue('-')
-      } else {
-        setOperation(val)
-      }
-      if (!val1 && (currentValue || result)) {
-        setVal1(currentValue || result)
-        setCurrentValue('')
-        setResult('')
-        setIsResult(false)
-      }
-    }
-  }
-
+  const reset = utils.getReset(setVal1, setOperation, setIsResult, setCurrentValue, setResult)
+  const addCharacter = utils.getAddCharacter(currentValue, setCurrentValue)
+  // eslint-disable-next-line max-len
+  const addOperation = utils.getAddOperation(currentValue, result, reset, operation, setCurrentValue, setOperation, val1, setVal1, setResult, setIsResult)
   const removeLastCharacter = () => {
     setCurrentValue(currentValue.slice(0, -1))
   }
-
-  const showResult = () => {
-    if (operation) {
-      let operationResult = ''
-      switch (operation) {
-        case '+':
-          operationResult = utils.sum(val1, currentValue).toString()
-          break
-        case '-':
-          operationResult = utils.dif(val1, currentValue).toString()
-          break
-        case '*':
-          operationResult = utils.mul(val1, currentValue).toString()
-          break
-        case '/':
-          operationResult = utils.div(val1, currentValue).toString()
-          break
-
-        default:
-          break
-      }
-      if (addOperationToHistory && operationResult) {
-        addOperationToHistory(`${val1} ${operation} ${currentValue} = ${operationResult}`)
-      }
-      setIsResult(true)
-      setResult(operationResult)
-      setCurrentValue('')
-      setVal1('')
-      setOperation('')
-    }
-  }
-
-  const calculatorKeyDown = (e) => {
-    if (e.key !== 'Tab') e.preventDefault()
-    if (keyNumbers.includes(e.key)) {
-      isResult && reset()
-      addCharacter(e.key.toString())
-    } else if (keyOperations.includes(e.key)) {
-      addOperation(e.key.toString())
-    } else if (keyActions.includes(e.key)) {
-      if (e.key === 'Enter' || e.key === '=') {
-        showResult()
-      } else if (e.key === 'Delete') {
-        reset()
-      } else if (e.key === 'Backspace') {
-        removeLastCharacter()
-      }
-    }
-  }
-
-  const handleClickNumberRotation = () => {
-    const numberToRotation = isResult ? result : currentValue
-    setIsResult(false)
-    setResult('')
-    setCurrentValue(utils.moveArray(numberToRotation.split('')).join(''))
-  }
+  // eslint-disable-next-line max-len
+  const showResult = utils.getShowResult(operation, val1, currentValue, addOperationToHistory, setIsResult, setResult, setCurrentValue, setVal1, setOperation)
+  // eslint-disable-next-line max-len
+  const calculatorKeyDown = utils.getCalculatorKeyDown(isResult, reset, addCharacter, addOperation, showResult, removeLastCharacter)
+  // eslint-disable-next-line max-len
+  const handleClickNumberRotation = utils.getHandleClickNumberRotation(isResult, result, currentValue, setIsResult, setResult, setCurrentValue)
 
   return (
     <div>
