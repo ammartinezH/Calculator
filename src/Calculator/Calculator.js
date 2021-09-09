@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import PropTypes from 'prop-types'
 import ButtonCalc from './components/ButtonCalc'
 import * as utils from './utils'
 
@@ -9,7 +10,7 @@ import * as utils from './utils'
  * @example
  * <Calculator />
  */
-const Calculator = () => {
+const Calculator = ({ addOperationToHistory, lastOperation }) => {
   const [val1, setVal1] = useState('')
   const [currentValue, setCurrentValue] = useState('')
   const [result, setResult] = useState('')
@@ -90,6 +91,9 @@ const Calculator = () => {
         default:
           break
       }
+      if (addOperationToHistory && operationResult) {
+        addOperationToHistory(`${val1} ${operation} ${currentValue} = ${operationResult}`)
+      }
       setIsResult(true)
       setResult(operationResult)
       setCurrentValue('')
@@ -138,9 +142,11 @@ const Calculator = () => {
       >
         <div className="result">
           <span className="light-result">
-            {val1}
-            {' '}
-            {operation}
+            {
+              val1 && operation
+                ? `${val1} ${operation}`
+                : lastOperation
+            }
           </span>
           <input
             data-testid="result"
@@ -236,6 +242,16 @@ const Calculator = () => {
       </div>
     </div>
   )
+}
+
+Calculator.propTypes = {
+  addOperationToHistory: PropTypes.func,
+  lastOperation: PropTypes.string,
+}
+
+Calculator.defaultProps = {
+  addOperationToHistory: null,
+  lastOperation: null,
 }
 
 export default Calculator

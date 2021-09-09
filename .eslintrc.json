@@ -23,6 +23,7 @@
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
         "no-unused-expressions": [2, { "allowShortCircuit": true, "allowTernary": true }],
-        "semi": [2, "never"]
+        "semi": [2, "never"],
+        "import/prefer-default-export": "off"
     }
 }

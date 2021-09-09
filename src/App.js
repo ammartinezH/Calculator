@@ -1,11 +1,11 @@
 import React from 'react'
-import Calculator from './Calculator/Calculator'
 import './styles.css'
+import CalculatorContainer from './Calculator/CalculatorContainer'
 
 export default function App() {
   return (
     <div className="App">
-      <Calculator />
+      <CalculatorContainer />
     </div>
   )
 }
