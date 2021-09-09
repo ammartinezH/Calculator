@@ -86,7 +86,7 @@ const Calculator = ({ addOperationToHistory, lastOperation }) => {
             C
           </ButtonCalc>
           <ButtonCalc
-            active={currentKeyPress === 'Delete'}
+            active={currentKeyPress === 'ROT'}
             inputResult={inputResult}
             onClick={handleClickNumberRotation}
             calculatorKeyDown={calculatorKeyDown}
