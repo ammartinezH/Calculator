@@ -9,5 +9,5 @@ const middlewares = [thunk]
 if (!(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test')) {
   middlewares.push(createLogger({ collapse: true }))
 }
-export const preloadedState = composeWithDevTools(applyMiddleware(...middlewares))
-export const store = createStore(reducer, preloadedState)
+export const enhancer = composeWithDevTools(applyMiddleware(...middlewares))
+export const store = createStore(reducer, enhancer)

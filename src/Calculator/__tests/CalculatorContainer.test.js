@@ -7,12 +7,12 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import { numbers, operations } from './utils'
 import { reducer } from '../../reducer'
-import { preloadedState } from '../../store'
+import { enhancer } from '../../store'
 import CalculatorContainer from '../CalculatorContainer'
 
 const setup = (state = {}) => {
   cleanup()
-  const store = createStore(reducer, state, preloadedState)
+  const store = createStore(reducer, state, enhancer)
   const container = render(
     <Provider store={store}>
       <CalculatorContainer />
