@@ -113,3 +113,15 @@ export const getHandleClickNumberRotation = (isResult, result, currentValue, set
   setCurrentValue(moveArray(numberToRotation.split(''))
     .join(''))
 }
+const getFixedValue = (number) => (number && regexNumberFloat.test(number) ? parseFloat(number) : 0)
+
+export const getHandleClickAddM = (addM, currentValue) => () => {
+  addM(getFixedValue(currentValue))
+}
+export const getHandleClickDiffM = (diffM, currentValue) => () => {
+  diffM(getFixedValue(currentValue))
+}
+export const getHandleClickMr = (setResult, setCurrentValue, mr) => () => {
+  setResult('')
+  setCurrentValue(mr)
+}
