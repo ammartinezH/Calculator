@@ -110,7 +110,7 @@ export const getHandleClickNumberRotation = (isResult, result, currentValue, set
   const numberToRotation = isResult ? result : currentValue
   setIsResult(false)
   setResult('')
-  setCurrentValue(moveArray(numberToRotation.split(''))
+  setCurrentValue(moveArray(numberToRotation.toString().split(''))
     .join(''))
 }
 const getFixedValue = (number) => (number && regexNumberFloat.test(number) ? parseFloat(number) : 0)
