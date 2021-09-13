@@ -31,7 +31,7 @@ describe('[Calculators]', () => {
       test(`display ${number}`, () => {
         const { input } = setup()
 
-        fireEvent.click(screen.getByRole('button', { name: number }))
+        fireEvent.click(screen.getByText(number, { selector: '[role="button"]' }))
         expect(input.value).toBe(number)
       })
     })
@@ -51,8 +51,8 @@ describe('[Calculators]', () => {
   describe('other tests', () => {
     test('display number concated', () => {
       const { input } = setup()
-      fireEvent.click(screen.getByRole('button', { name: '1' }))
-      fireEvent.click(screen.getByRole('button', { name: '2' }))
+      fireEvent.click(screen.getByText('1', { selector: '[role="button"]' }))
+      fireEvent.click(screen.getByText('2', { selector: '[role="button"]' }))
       expect(input.value).toBe('12')
     })
   })
@@ -65,15 +65,15 @@ describe('[Calculators]', () => {
         const { input } = setup()
 
         val1.split('').forEach((number) => {
-          const btn = screen.queryByRole('button', { name: number })
+          const btn = screen.queryByText(number, { selector: '[role="button"]' })
           btn && fireEvent.click(btn)
         })
-        fireEvent.click(screen.getByRole('button', { name: operation }))
+        fireEvent.click(screen.getByText(operation, { selector: '[role="button"]' }))
         val2.split('').forEach((number) => {
-          const btn = screen.queryByRole('button', { name: number })
+          const btn = screen.queryByText(number, { selector: '[role="button"]' })
           btn && fireEvent.click(btn)
         })
-        fireEvent.click(screen.getByRole('button', { name: '=' }))
+        fireEvent.click(screen.getByText('=', { selector: '[role="button"]' }))
 
         expect(input.value).toBe(result)
       })
@@ -108,9 +108,8 @@ describe('[Calculators]', () => {
       fireEvent.keyDown(input, { key: '3' })
       fireEvent.keyDown(input, { key: '4' })
 
-      const btn = screen.getByRole('button', { name: /^ROT$/i })
+      fireEvent.click(screen.getByText('ROT', { selector: '[role="button"]' }))
 
-      fireEvent.click(btn)
       expect(input.value).toBe('2341')
     })
     test('Click 3 times', () => {
@@ -119,7 +118,7 @@ describe('[Calculators]', () => {
       fireEvent.keyDown(input, { key: '2' })
       fireEvent.keyDown(input, { key: '3' })
       fireEvent.keyDown(input, { key: '4' })
-      const btn = screen.getByRole('button', { name: /^ROT$/i })
+      const btn = screen.getByText('ROT', { selector: '[role="button"]' })
       fireEvent.click(btn)
       fireEvent.click(btn)
       fireEvent.click(btn)
@@ -133,9 +132,9 @@ describe('[Calculators]', () => {
       const btn2 = screen.queryByRole('button', { name: '2' })
       fireEvent.click(btn2)
       fireEvent.click(btn2)
-      fireEvent.click(screen.getByRole('button', { name: '+' }))
+      fireEvent.click(screen.getByText('+', { selector: '[role="button"]' }))
       fireEvent.click(btn2)
-      fireEvent.click(screen.getByRole('button', { name: '=' }))
+      fireEvent.click(screen.getByText('=', { selector: '[role="button"]' }))
 
       return screen.findByText('22 + 2 = 24').then((element) => {
         expect(element).toBeInTheDocument()
@@ -147,13 +146,13 @@ describe('[Calculators]', () => {
       const btn2 = screen.queryByRole('button', { name: '2' })
       fireEvent.click(btn2)
       fireEvent.click(btn2)
-      fireEvent.click(screen.getByRole('button', { name: '+' }))
+      fireEvent.click(screen.getByText('+', { selector: '[role="button"]' }))
       fireEvent.click(btn2)
-      fireEvent.click(screen.getByRole('button', { name: '=' }))
+      fireEvent.click(screen.getByText('=', { selector: '[role="button"]' }))
 
-      fireEvent.click(screen.getByRole('button', { name: '+' }))
+      fireEvent.click(screen.getByText('+', { selector: '[role="button"]' }))
       fireEvent.click(btn2)
-      fireEvent.click(screen.getByRole('button', { name: '=' }))
+      fireEvent.click(screen.getByText('=', { selector: '[role="button"]' }))
 
       return screen.findByText('24 + 2 = 26').then((element) => {
         expect(element).toBeInTheDocument()
@@ -166,30 +165,30 @@ describe('[Calculators]', () => {
       fireEvent.keyDown(input, { key: '1' })
       fireEvent.keyDown(input, { key: '2' })
 
-      fireEvent.click(screen.getByRole('button', { name: 'M+' }))
-      fireEvent.click(screen.getByRole('button', { name: 'C' }))
+      fireEvent.click(screen.getByText('M+', { selector: '[role="button"]' }))
+      fireEvent.click(screen.getByText('C', { selector: '[role="button"]' }))
       expect(input.value).toBe('')
-      fireEvent.click(screen.getByRole('button', { name: 'MR' }))
+      fireEvent.click(screen.getByText('MR', { selector: '[role="button"]' }))
       expect(input.value).toBe('12')
     })
     test('Do operation with MR', () => {
       const { input } = setup()
       fireEvent.keyDown(input, { key: '2' })
-      fireEvent.click(screen.getByRole('button', { name: 'M+' }))
-      fireEvent.click(screen.getByRole('button', { name: 'C' }))
+      fireEvent.click(screen.getByText('M+', { selector: '[role="button"]' }))
+      fireEvent.click(screen.getByText('C', { selector: '[role="button"]' }))
       fireEvent.keyDown(input, { key: '1' })
       fireEvent.keyDown(input, { key: '2' })
       fireEvent.keyDown(input, { key: '*' })
-      fireEvent.click(screen.getByRole('button', { name: 'MR' }))
+      fireEvent.click(screen.getByText('MR', { selector: '[role="button"]' }))
       fireEvent.keyDown(input, { key: 'Enter' })
       expect(input.value).toBe('24')
     })
     test('Reset MR', () => {
       const { input } = setup()
       fireEvent.keyDown(input, { key: '2' })
-      fireEvent.click(screen.getByRole('button', { name: 'M+' }))
-      fireEvent.click(screen.getByRole('button', { name: 'M-' }))
-      fireEvent.click(screen.getByRole('button', { name: 'MR' }))
+      fireEvent.click(screen.getByText('M+', { selector: '[role="button"]' }))
+      fireEvent.click(screen.getByText('M-', { selector: '[role="button"]' }))
+      fireEvent.click(screen.getByText('MR', { selector: '[role="button"]' }))
       expect(input.value).toBe('0')
     })
   })
